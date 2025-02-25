@@ -1,0 +1,56 @@
+# 核心依赖
+torch>=2.0.0
+transformers>=4.30.0
+sentence-transformers>=2.2.0
+faiss-cpu>=1.7.4  # 如果使用GPU，替换为faiss-gpu
+langchain>=0.1.0
+langchain-community>=0.0.10
+
+# 文档处理
+python-magic>=0.4.27
+python-magic-bin>=0.4.14; platform_system == "Windows"  # Windows系统需要
+pdf2image>=1.16.3
+pytesseract>=0.3.10
+Pillow>=10.0.0
+pypdf>=3.17.0
+markdown>=3.4.3
+beautifulsoup4>=4.12.0
+python-docx>=0.8.11
+openpyxl>=3.1.2
+
+# 数据处理
+numpy>=1.24.0
+pandas>=2.0.0
+pyyaml>=6.0.1
+
+# 文本处理
+jieba>=0.42.1
+nltk>=3.8.1
+rank-bm25>=0.2.2
+
+# Web框架 (如果需要API服务)
+fastapi>=0.100.0
+uvicorn>=0.23.0
+pydantic>=2.0.0
+
+# 异步支持
+aiohttp>=3.8.5
+aiofiles>=23.1.0
+
+# 日志和监控
+prometheus-client>=0.17.0
+python-json-logger>=2.0.7
+
+# 测试和开发
+pytest>=7.4.0
+pytest-asyncio>=0.21.1
+pytest-cov>=4.1.0
+black>=23.7.0
+isort>=5.12.0
+flake8>=6.1.0
+
+# 可选依赖
+cuda-python>=12.0.0; platform_system != "Windows"  # 如果使用NVIDIA GPU
+tokenizers>=0.13.3
+accelerate>=0.21.0
+bitsandbytes>=0.41.1

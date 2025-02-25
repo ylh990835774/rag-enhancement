@@ -1,123 +1,123 @@
-# DeepSeek Advanced RAG System
+# DeepSeek RAG System
 
-一个基于 DeepSeek LLM 的高级检索增强生成(RAG)系统,支持多模态文档处理、自适应检索和上下文压缩等特性。
+一个基于 DeepSeek 的高级检索增强生成(RAG)系统，提供模块化、高性能的知识库问答能力。
 
-## 主要特性
+## 特性
 
-- 多模态文档处理
+- **模块化设计**
 
-  - 支持 PDF、文本、图片等多种格式
-  - OCR 文字识别
-  - 图像内容理解
+  - 文档处理：支持 PDF、文本、图片等多格式文档
+  - 向量存储：基于 FAISS 的高性能向量索引
+  - 混合检索：结合语义和关键词的智能检索
+  - 流式响应：支持大规模文本生成
 
-- 智能检索
+- **高性能**
 
-  - 层次化检索架构
-  - 查询扩展
-  - 文档重排序
-  - 自适应检索策略
+  - GPU 加速支持
+  - 批处理优化
+  - 异步处理
+  - 资源自动管理
 
-- 上下文优化
+- **可扩展**
+  - 配置驱动
+  - 组件可替换
+  - 状态持久化
+  - 完整指标收集
 
-  - 智能上下文压缩
-  - 相关性排序
-  - 文档去重
+## 安装
 
-- 系统扩展性
-  - 模块化设计
-  - 可配置组件
-  - 状态保存/加载
+```bash
+pip install -r requirements.txt
+```
 
 ## 快速开始
 
-### 安装依赖
+### 基础用法
+
+```python
+import asyncio
+from pathlib import Path
+from src.rag import RAGConfig, RAGSystem
+async def main():
+# 初始化系统
+config = RAGConfig(
+embedding_model="BAAI/bge-large-zh",
+llm_model="deepseek-ai/deepseek-llm-7b-chat"
+)
+rag = RAGSystem(config)
+# 处理文档
+await rag.process_documents([Path("your_doc.pdf")])
+# 查询
+result = await rag.query("你的问题")
+print(result["answer"])
+asyncio.run(main())
+```
+
+### 高级用法
+
+```python
+# 自定义配置
+config = RAGConfig(
+embedding_model="BAAI/bge-large-zh",
+llm_model="deepseek-ai/deepseek-llm-7b-chat",
+chunk_size=500,
+device="cuda:0"
+)
+
+# 流式输出
+async for token in rag.query_stream("复杂问题"):
+print(token, end="", flush=True)
+```
+
+## 项目结构
 
 ```bash
-pip install langchain torch transformers sentence-transformers pdf2image pytesseract faiss-cpu pillow
+src/rag/
+├── config.py # 配置管理
+├── system.py # 系统主类
+├── document/ # 文档处理
+├── vector_store/ # 向量存储
+├── retrieval/ # 检索模块
+├── query/ # 查询处理
+└── utils/ # 工具模块
 ```
-
-### 基本使用
-
-```python
-from deepseek_rag import DeepSeekAdvancedRAG
-```
-
-### 初始化系统
-
-```python
-rag = DeepSeekAdvancedRAG()
-```
-
-### 添加文档
-
-```python
-rag.add_document("document.pdf")
-rag.add_document("image.jpg")
-```
-
-### 构建知识库
-
-```python
-rag.build_knowledge_base()
-```
-
-### 查询
-
-```python
-result = rag.query("你的问题")
-print(result)
-```
-
-### 高级功能
-
-```python
-# 启用重排序
-rag.enable_reranker()
-
-# 带图像的查询
-result = rag.query("图表分析", image_path="chart.png")
-
-# 自适应查询
-result = rag.adaptive_query("复杂问题")
-
-# 保存/加载系统状态
-rag.save("./rag_system")
-rag = DeepSeekAdvancedRAG.load("./rag_system")
-```
-
-## 系统架构
-
-- DeepSeekKnowledgeBase: 基础知识库管理
-- DeepSeekAdvancedRAG: 高级 RAG 系统封装
-- QueryExpander: 查询扩展
-- ContextCompressor: 上下文压缩
-- AdaptiveRAG: 自适应检索策略
-- HierarchicalRetrieval: 层次化检索
-- DocumentReranker: 文档重排序
-- MultimodalRAG: 多模态处理
 
 ## 配置选项
 
-- model_name: Embedding 模型路径
-- llm_path: LLM 模型路径
-- device: 运行设备(CPU/CUDA)
-- chunk_size: 文档分块大小
-- chunk_overlap: 分块重叠大小
+| 参数            | 说明           | 默认值                           |
+| --------------- | -------------- | -------------------------------- |
+| embedding_model | Embedding 模型 | BAAI/bge-large-zh                |
+| llm_model       | LLM 模型       | deepseek-ai/deepseek-llm-7b-chat |
+| chunk_size      | 文档分块大小   | 1000                             |
+| chunk_overlap   | 分块重叠大小   | 100                              |
+| device          | 运行设备       | cuda if available else cpu       |
 
-## 性能评估
+## 开发指南
 
-系统提供内置评估功能:
+### 测试
 
-```python
-metrics = rag.evaluate_retrieval(test_queries, ground_truth)
-print(metrics)
+```bash
+运行单元测试
+pytest tests/test_rag_system.py
+
+运行集成测试
+pytest tests/test_integration.py -m integration
 ```
+
+### 性能评估
+
+系统内置性能指标收集：
+
+- 查询延迟
+- 检索准确率
+- 资源使用率
+- 处理时间
 
 ## 注意事项
 
-- 需要安装 Tesseract-OCR 用于图像文字识别
-- 大规模文档建议使用 GPU 加速
-- 保存路径需要足够存储空间
+- 需要安装 Tesseract-OCR 支持图像处理
+- 建议使用 GPU 加速大规模文档处理
+- 首次运行会下载模型，请确保网络连接
 
 ## License
 
