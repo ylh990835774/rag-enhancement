@@ -1,0 +1,9 @@
+[tool.ruff]
+line-length = 120
+select = ["E", "F", "I"]
+fix = true
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = true
