@@ -38,18 +38,19 @@ pip install -r requirements.txt
 import asyncio
 from pathlib import Path
 from src.rag import RAGConfig, RAGSystem
+
+
 async def main():
-# 初始化系统
-config = RAGConfig(
-embedding_model="BAAI/bge-large-zh",
-llm_model="deepseek-ai/deepseek-llm-7b-chat"
-)
-rag = RAGSystem(config)
-# 处理文档
-await rag.process_documents([Path("your_doc.pdf")])
-# 查询
-result = await rag.query("你的问题")
-print(result["answer"])
+    # 初始化系统
+    config = RAGConfig(embedding_model="BAAI/bge-large-zh", llm_model="deepseek-ai/deepseek-llm-7b-chat")
+    rag = RAGSystem(config)
+    # 处理文档
+    await rag.process_documents([Path("your_doc.pdf")])
+    # 查询
+    result = await rag.query("你的问题")
+    print(result["answer"])
+
+
 asyncio.run(main())
 ```
 
@@ -58,10 +59,10 @@ asyncio.run(main())
 ```python
 # 自定义配置
 config = RAGConfig(
-embedding_model="BAAI/bge-large-zh",
-llm_model="deepseek-ai/deepseek-llm-7b-chat",
-chunk_size=500,
-device="cuda:0"
+    embedding_model="BAAI/bge-large-zh",
+    llm_model="deepseek-ai/deepseek-llm-7b-chat",
+    chunk_size=500,
+    device="cuda:0"
 )
 
 # 流式输出
