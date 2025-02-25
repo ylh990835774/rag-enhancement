@@ -60,20 +60,21 @@ class DocumentProcessor:
         loader = PyPDFLoader(str(file_path))
         documents.extend(loader.load())
 
-        # 处理图片
-        try:
-            images = convert_from_path(str(file_path))
-            for i, img in enumerate(images):
-                text = self._extract_text_from_image(img)
-                if text:
-                    documents.append(
-                        {
-                            "page_content": text,
-                            "metadata": {"source": f"{file_path}:image_{i}", "page": i, "type": "pdf_image"},
-                        }
-                    )
-        except Exception as e:
-            self.logger.warning(f"Failed to process PDF images in {file_path}: {e}")
+        # 仅在配置开启时处理图片
+        if self.config.process_pdf_images:
+            try:
+                images = convert_from_path(str(file_path))
+                for i, img in enumerate(images):
+                    text = self._extract_text_from_image(img)
+                    if text:
+                        documents.append(
+                            {
+                                "page_content": text,
+                                "metadata": {"source": f"{file_path}:image_{i}", "page": i, "type": "pdf_image"},
+                            }
+                        )
+            except Exception as e:
+                self.logger.warning(f"Failed to process PDF images in {file_path}: {e}")
 
         return documents
 

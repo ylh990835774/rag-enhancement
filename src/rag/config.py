@@ -19,6 +19,9 @@ class RAGConfig:
     chunk_overlap: int = 100
     batch_size: int = 32
 
+    # 适配PDF图片
+    process_pdf_images: bool = True
+
     # 系统配置
     max_retries: int = 3
     cache_dir: Path = Path("./cache")
