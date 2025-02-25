@@ -1,7 +1,8 @@
 import asyncio
 from pathlib import Path
 
-from src.rag import RAGConfig, RAGSystem
+from src.rag.config import RAGConfig
+from src.rag.system import RAGSystem
 
 
 async def main():
